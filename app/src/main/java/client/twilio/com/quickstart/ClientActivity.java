@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Chronometer;
 import android.widget.EditText;
@@ -35,6 +36,9 @@ import com.twilio.client.Device;
 import com.twilio.client.DeviceListener;
 import com.twilio.client.PresenceEvent;
 import com.twilio.client.Twilio;
+import com.twilio.client.impl.CallFactory;
+import com.twilio.client.impl.session.Account;
+import com.twilio.client.impl.useragent.Call;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -105,6 +109,8 @@ public class ClientActivity extends AppCompatActivity implements DeviceListener,
     private Chronometer chronometer;
     private View callView;
     private View capabilityPropertiesView;
+    private EditText conferenceCallNumberEdit;
+    private Button callConferenceNumberButton;
 
     private boolean muteMicrophone;
     private boolean speakerPhone;
@@ -122,6 +128,10 @@ public class ClientActivity extends AppCompatActivity implements DeviceListener,
         muteActionFab = (FloatingActionButton) findViewById(R.id.mute_action_fab);
         speakerActionFab = (FloatingActionButton) findViewById(R.id.speaker_action_fab);
         chronometer = (Chronometer) findViewById(R.id.chronometer);
+
+        conferenceCallNumberEdit = (EditText) findViewById(R.id.conference_num_edit);
+        callConferenceNumberButton = (Button) findViewById(R.id.conf_call_button);
+        setConfCallButton();
 
         /*
          * Create a default profile (name=jenny, allowOutgoing=true, allowIncoming=true)
@@ -144,6 +154,16 @@ public class ClientActivity extends AppCompatActivity implements DeviceListener,
          * Set the initial state of the UI
          */
         setCallAction();
+    }
+
+    private void setConfCallButton() {
+        callConferenceNumberButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //connect(conferenceCallNumberEdit.getText().toString(), true);
+                addPerson(conferenceCallNumberEdit.getText().toString());
+            }
+        });
     }
 
     /*
@@ -289,6 +309,18 @@ public class ClientActivity extends AppCompatActivity implements DeviceListener,
                 });
     }
 
+    private void addPerson(String contact) {
+        TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
+        Account mainAccount = client.getAccount();
+        CallFactory callFactory = mainAccount.getCallFactory();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("To", contact);
+        params.put("ConfName", "anthony");
+        params.put("Url", "https://fluency-1.herokuapp.com/conference?conf_name=anthony");
+        clientDevice.connect(params, this);
+        Call call = callFactory.create(params);
+    }
+
     /*
      * Create an outgoing connection
      */
@@ -300,6 +332,8 @@ public class ClientActivity extends AppCompatActivity implements DeviceListener,
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("To", contact);
+        params.put("ConfName", "anthony");
+        params.put("Url", "https://fluency-1.herokuapp.com/conference?conf_name=anthony");
 
         if (clientDevice != null) {
             // Create an outgoing connection
