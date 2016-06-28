@@ -314,7 +314,7 @@ public class ClientActivity extends AppCompatActivity implements DeviceListener,
         params.put("To", contact);
         params.put("ConfName", "anthony");
         params.put("Url", "https://fluency-1.herokuapp.com/conference?conf_name=anthony");
-        //clientDevice.connect(params, this);
+        clientDevice.connect(params, this);
 //        Call call = callFactory.create(params);
     }
 
