@@ -36,9 +36,6 @@ import com.twilio.client.Device;
 import com.twilio.client.DeviceListener;
 import com.twilio.client.PresenceEvent;
 import com.twilio.client.Twilio;
-import com.twilio.client.impl.CallFactory;
-import com.twilio.client.impl.session.Account;
-import com.twilio.client.impl.useragent.Call;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -310,15 +307,15 @@ public class ClientActivity extends AppCompatActivity implements DeviceListener,
     }
 
     private void addPerson(String contact) {
-        TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
-        Account mainAccount = client.getAccount();
-        CallFactory callFactory = mainAccount.getCallFactory();
+//        TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
+//        Account mainAccount = client.getAccount();
+//        CallFactory callFactory = mainAccount.getCallFactory();
         Map<String, String> params = new HashMap<String, String>();
         params.put("To", contact);
         params.put("ConfName", "anthony");
         params.put("Url", "https://fluency-1.herokuapp.com/conference?conf_name=anthony");
-        clientDevice.connect(params, this);
-        Call call = callFactory.create(params);
+        //clientDevice.connect(params, this);
+//        Call call = callFactory.create(params);
     }
 
     /*
