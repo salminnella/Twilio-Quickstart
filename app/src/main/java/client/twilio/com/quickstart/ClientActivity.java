@@ -313,8 +313,7 @@ public class ClientActivity extends AppCompatActivity implements DeviceListener,
                 });
     }
 
-    private void addPerson(String contact) {
-        //https://fluency-1.herokuapp.com/join?ConfName=anthony&number=5054106380
+    private void addPerson(final String contact) {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         String url = "https://fluency-1.herokuapp.com/join";
 
@@ -335,31 +334,15 @@ public class ClientActivity extends AppCompatActivity implements DeviceListener,
             protected Map<String, String> getParams() {
                 Map<String, String> MyData = new HashMap<String, String>();
                 MyData.put("ConfName", "anthony"); //Add the data you'd like to send to the server.
-                MyData.put("To", "5204403178");
-                MyData.put("SendDigits", "4860#wwwwwwwwwwwwwwww1");
-                MyData.put("Method", "GET");
+                MyData.put("To", contact);
+                //MyData.put("To", "5204403178");
+                //MyData.put("SendDigits", "4860#wwwwwwwwwwwwwwww1");
+                //MyData.put("Method", "GET");
                 return MyData;
             }
         };
 
         requestQueue.add(MyStringRequest);
-
-//        Map<String, String> params = new HashMap<String, String>();
-//        //params.put("To", contact);
-//        params.put("To", "conference:anthony");
-//        params.put("From", "5204403178");
-//        //params.put("ConfName", "anthony");
-//        //params.put("Url", "https://fluency-1.herokuapp.com/call?conf_name=anthony");
-//
-//        if (clientDevice != null) {
-//            // Create an outgoing connection
-//            connection = clientDevice.connect(params, this);
-//            setCallUI();
-//        } else {
-//            Toast.makeText(ClientActivity.this, "No existing device", Toast.LENGTH_SHORT).show();
-//        }
-
-
     }
 
     /*
@@ -377,7 +360,7 @@ public class ClientActivity extends AppCompatActivity implements DeviceListener,
         params.put("To", "conference:anthony");
         //params.put("SendDigits", "4860#wwwwwwwwwwwwwwww1");
         //params.put("ConfName", "anthony");
-        params.put("From", "client:antonM");
+        params.put("From", "client:antonyC");
         //params.put("From", "5204403178");
         //params.put("Url", "https://fluency-1.herokuapp.com/conference?conf_name=anthony");
         //params.put("Url", "https://fluency-1.herokuapp.com/call");
