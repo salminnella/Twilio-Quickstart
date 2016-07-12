@@ -18,13 +18,24 @@ android {
         }
     }
 }
-
+android {
+    packagingOptions {
+        exclude 'ASL2.0'
+    }
+}
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
 dependencies {
     testCompile 'junit:junit:4.10'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.koushikdutta.ion:ion:2.+'
     compile files('libs/twilio-client-android.jar')
+    //compile files('libs/twilio-java-sdk-6.3.0.jar')
     // The Client SDK resides on jCenter
     compile 'com.twilio:client-android:1.2.14'
+    compile 'com.mcxiaoke.volley:library:1.0.19'
 }

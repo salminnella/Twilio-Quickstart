@@ -3,8 +3,8 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>client.twilio.com.quickstart</groupId>
-    <artifactId>gs-maven-android</artifactId>
-    <version>0.1.0</version>
+    <artifactId>twilio-client-quickstart-android-master</artifactId>
+    <version>1.0</version>
     <packaging>apk</packaging>
 
     <properties>
@@ -20,13 +20,14 @@
             <version>4.1.1.4</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio-java-sdk</artifactId>
+            <version>5.10.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
-    <dependency>
-        <groupId>com.twilio.sdk</groupId>
-        <artifactId>twilio-java-sdk</artifactId>
-        <version>5.10.0</version>
-        <scope>compile</scope>
-    </dependency>
+    
     <build>
         <plugins>
             <plugin>
@@ -35,7 +36,7 @@
                 <version>3.9.0-rc.1</version>
                 <configuration>
                     <sdk>
-                        <platform>19</platform>
+                        <platform>23</platform>
                     </sdk>
                     <deleteConflictingFiles>true</deleteConflictingFiles>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>

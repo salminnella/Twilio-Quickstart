@@ -28,6 +28,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.twilio.client.Connection;
@@ -39,6 +45,7 @@ import com.twilio.client.Twilio;
 
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class ClientActivity extends AppCompatActivity implements DeviceListener, ConnectionListener {
 
@@ -65,7 +72,6 @@ public class ClientActivity extends AppCompatActivity implements DeviceListener,
      */
     private Connection connection;
     private Connection pendingConnection;
-
     /*
      * A representation of the current properties of a client token
      */
@@ -116,6 +122,7 @@ public class ClientActivity extends AppCompatActivity implements DeviceListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client);
+
 
         callView = (View) findViewById(R.id.call_layout);
         capabilityPropertiesView = (View) findViewById(R.id.capability_properties);
@@ -307,15 +314,52 @@ public class ClientActivity extends AppCompatActivity implements DeviceListener,
     }
 
     private void addPerson(String contact) {
-//        TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
-//        Account mainAccount = client.getAccount();
-//        CallFactory callFactory = mainAccount.getCallFactory();
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("To", contact);
-        params.put("ConfName", "anthony");
-        params.put("Url", "https://fluency-1.herokuapp.com/conference?conf_name=anthony");
-        clientDevice.connect(params, this);
-//        Call call = callFactory.create(params);
+        //https://fluency-1.herokuapp.com/join?ConfName=anthony&number=5054106380
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        String url = "https://fluency-1.herokuapp.com/join";
+
+        StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+                Log.i(TAG, "onResponse: " + response);
+            }
+        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+                Log.i(TAG, "onErrorResponse: there was an error");
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+                MyData.put("ConfName", "anthony"); //Add the data you'd like to send to the server.
+                MyData.put("To", "5204403178");
+                MyData.put("SendDigits", "4860#wwwwwwwwwwwwwwww1");
+                MyData.put("Method", "GET");
+                return MyData;
+            }
+        };
+
+        requestQueue.add(MyStringRequest);
+
+//        Map<String, String> params = new HashMap<String, String>();
+//        //params.put("To", contact);
+//        params.put("To", "conference:anthony");
+//        params.put("From", "5204403178");
+//        //params.put("ConfName", "anthony");
+//        //params.put("Url", "https://fluency-1.herokuapp.com/call?conf_name=anthony");
+//
+//        if (clientDevice != null) {
+//            // Create an outgoing connection
+//            connection = clientDevice.connect(params, this);
+//            setCallUI();
+//        } else {
+//            Toast.makeText(ClientActivity.this, "No existing device", Toast.LENGTH_SHORT).show();
+//        }
+
+
     }
 
     /*
@@ -328,9 +372,15 @@ public class ClientActivity extends AppCompatActivity implements DeviceListener,
         }
 
         Map<String, String> params = new HashMap<String, String>();
-        params.put("To", contact);
-        params.put("ConfName", "anthony");
-        params.put("Url", "https://fluency-1.herokuapp.com/conference?conf_name=anthony");
+
+        //params.put("To", contact);
+        params.put("To", "conference:anthony");
+        //params.put("SendDigits", "4860#wwwwwwwwwwwwwwww1");
+        //params.put("ConfName", "anthony");
+        params.put("From", "client:antonM");
+        //params.put("From", "5204403178");
+        //params.put("Url", "https://fluency-1.herokuapp.com/conference?conf_name=anthony");
+        //params.put("Url", "https://fluency-1.herokuapp.com/call");
 
         if (clientDevice != null) {
             // Create an outgoing connection
